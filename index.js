@@ -24,20 +24,21 @@ const createRequest = (input, callback) => {
   const endpoint = validator.validated.data.endpoint || 'graphql'
   const url = `https://realm.mongodb.com/api/client/v2.0/app/petproject-sfwui/${endpoint}`
   const subAddress = validator.validated.data.address
-  
-    const query =JSON.stringify({query: `
-    query {
-        walks (query: {Walker_Address: "${subAddress}"}, sortBy: TIME_WALKED_ASC) {
-            Distance_Walked
-            Dog_Name
-            Time_Walked
-            UNIX_Timestamp
-            Walker_Address
-            Walker_Name
-            _id
-        }
-      }`
-    })  
+  const hexaddress = '0x' + BigInt(subAddress).toString(16).padStart(40, '0') //to deal with weird parsing errors
+
+  const query =JSON.stringify({query: `
+  query {
+      walks (query: {Walker_Address: "${hexaddress}"}, sortBy: TIME_WALKED_ASC) {
+          Distance_Walked
+          Dog_Name
+          Time_Walked
+          UNIX_Timestamp
+          Walker_Address
+          Walker_Name
+          _id
+      }
+    }`
+  })  
 
   const config = {
     url,
