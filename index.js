@@ -13,7 +13,7 @@ const customError = (data) => {
 // with a Boolean value indicating whether or not they
 // should be required.
 const customParams = {
-  city: ['q', 'city', 'town'],
+  address: ['address'],
   endpoint: false
 }
 
@@ -21,22 +21,32 @@ const createRequest = (input, callback) => {
   // The Validator helps you validate the Chainlink request data
   const validator = new Validator(callback, input, customParams)
   const jobRunID = validator.validated.id
-  const endpoint = validator.validated.data.endpoint || 'weather'
-  const url = `https://api.openweathermap.org/data/2.5/${endpoint}`
-  const q = validator.validated.data.city.toUpperCase()
-  const appid = process.env.API_KEY;
-  console.log(appid);
-
-  const params = {
-    q,
-    appid
-  }
+  const endpoint = validator.validated.data.endpoint || 'graphql'
+  const url = `https://realm.mongodb.com/api/client/v2.0/app/petproject-sfwui/${endpoint}`
+  const subAddress = validator.validated.data.address
+  const query =JSON.stringify({query: `
+    query {
+        walks (query: {Walker_Address: "${subAddress}"}, sortBy: TIME_WALKED_ASC) {
+            Distance_Walked
+            Dog_Name
+            Time_Walked
+            UNIX_Timestamp
+            Walker_Address
+            Walker_Name
+            _id
+        }
+      }`
+})
 
   const config = {
     url,
-    params
+    headers: {
+      "email": "test@gmail.com",
+      "password": "test123",
+    },
+    data: query,
+    method: "POST"
   }
-
   // The Requester allows API calls be retry in case of timeout
   // or connection failure
   Requester.request(config, customError)
@@ -44,12 +54,13 @@ const createRequest = (input, callback) => {
       // It's common practice to store the desired value at the top-level
       // result key. This allows different adapters to be compatible with
       // one another.
-      response.data.result = Requester.validateResultNumber(response.data, ['main','temp'])
-      callback(response.status, Requester.success(jobRunID, response))
+      // console.log(response.data.walks)
+      // response.data.result = Requester.validateResultNumber(response.data, ['main','temp'])
+      // callback(response.status, Requester.success(jobRunID, response))
     })
-    .catch(error => {
-      callback(500, Requester.errored(jobRunID, error))
-    })
+    // .catch(error => {
+    //   callback(500, Requester.errored(jobRunID, error))
+    // })
 }
 
 // This is a wrapper to allow the function to work with
