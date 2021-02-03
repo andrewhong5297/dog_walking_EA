@@ -14,6 +14,7 @@ const customError = (data) => {
 // should be required.
 const customParams = {
   address: ['address'],
+  unix: ['unix'],
   endpoint: false
 }
 
@@ -24,7 +25,15 @@ const createRequest = (input, callback) => {
   const endpoint = validator.validated.data.endpoint || 'graphql'
   const url = `https://realm.mongodb.com/api/client/v2.0/app/petproject-sfwui/${endpoint}`
   const subAddress = validator.validated.data.address
-  const query =JSON.stringify({query: `
+  const unixTime = validator.validated.data.unixTime
+  
+  if (unixTime = null){
+    //some way so that if unix is null, go with one query, if it is not null then go with the other.
+    query for array 
+  }
+
+  else{
+    const query =JSON.stringify({query: `
     query {
         walks (query: {Walker_Address: "${subAddress}"}, sortBy: TIME_WALKED_ASC) {
             Distance_Walked
@@ -36,7 +45,8 @@ const createRequest = (input, callback) => {
             _id
         }
       }`
-})
+    })
+  }  
 
   const config = {
     url,
@@ -54,13 +64,36 @@ const createRequest = (input, callback) => {
       // It's common practice to store the desired value at the top-level
       // result key. This allows different adapters to be compatible with
       // one another.
-      // console.log(response.data.walks)
-      // response.data.result = Requester.validateResultNumber(response.data, ['main','temp'])
-      // callback(response.status, Requester.success(jobRunID, response))
+      console.log(response.data.data.walks)
+      const pet_response = response.data
+      const walkSum = pet_response.data.walks.reduce((sum,d) => {
+        return sum + d.Time_Walked
+      }, 0)
+    
+      const distanceSum = pet_response.data.walks.reduce((sum,d) => {
+        return sum + d.Distance_Walked
+      }, 0)
+    
+      const dogCountSum = pet_response.data.walks.reduce((sum) => {
+        return sum + 1
+      }, 0)
+      
+      //this one is probably its own API response, which checks UNIX time over last week. So query UNIX larger than the [block.timestamp - 604800] (seconds in a week)
+      //maybe these should be a batch API call? Since payments should only be once a week. But badge requests could be anytime? 
+      const totalPaymentsDue = pet_response.data.walks.reduce((sum,d) => {
+        return sum + (d.Distance_Walked*d.Time_Walked)
+      }, 0)
+    
+      const name = pet_response.data.walks[0].Walker_Name
+      const finalResponse = [name,walkSum,distanceSum,dogCountSum,totalPaymentsDue]
+
+      console.log(finalResponse)
+      response.data.result = Requester.validateResultNumber(response.data, ['main','temp'])
+      callback(response.status, Requester.success(jobRunID, finalResponse))
     })
-    // .catch(error => {
-    //   callback(500, Requester.errored(jobRunID, error))
-    // })
+    .catch(error => {
+      callback(500, Requester.errored(jobRunID, error))
+    })
 }
 
 // This is a wrapper to allow the function to work with
