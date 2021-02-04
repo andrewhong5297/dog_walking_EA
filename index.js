@@ -74,11 +74,17 @@ const createRequest = (input, callback) => {
       }, 0)
       totalPaymentsDue = Math.round(totalPaymentsDue * 100) / 100
       
-      const finalResponse = [walkSum*100,distanceSum*100,dogCountSum*100,totalPaymentsDue*100]
+      const arrayResponse = [walkSum*100,distanceSum*100,dogCountSum*100,totalPaymentsDue*100]
 
-      console.log(finalResponse)
+      const stringedResponse = arrayResponse.reduce((sum, d) => {
+         return sum + d.toString().padStart(8, "0")
+      }, "")
+    
+      // console.log(arrayResponse)
+      // console.log(stringedResponse.slice(0,8))
+      // console.log(stringedResponse.slice(8,16))
       // response.data.result = Requester.validateResultNumber(response.data, ['main','temp'])
-      callback(response.status, (jobRunID, finalResponse))
+      callback(response.status, (jobRunID, stringedResponse)) //8*four variables, so 36 characters. 
     })
     .catch(error => {
       callback(500, Requester.errored(jobRunID, error))
