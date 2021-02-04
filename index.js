@@ -78,7 +78,7 @@ const createRequest = (input, callback) => {
 
       console.log(finalResponse)
       // response.data.result = Requester.validateResultNumber(response.data, ['main','temp'])
-      callback(response.status, Requester.success(jobRunID, finalResponse))
+      callback(response.status, (jobRunID, finalResponse))
     })
     .catch(error => {
       callback(500, Requester.errored(jobRunID, error))

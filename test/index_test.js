@@ -11,7 +11,9 @@ describe('createRequest', () => {
 
     requests.forEach(req => {
       it(`${req.name}`, (done) => {
+        console.log(req.testData)
         createRequest(req.testData, (statusCode, data) => {
+          console.log(data)
           // console.log(data.json().data.walks)
           // console.log(statusCode)
 
