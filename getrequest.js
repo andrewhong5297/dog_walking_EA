@@ -16,18 +16,13 @@
       }
     },
     {
-      "type": "EthBytes32",
-      "confirmations": null,
-      "params": {
-      }
+      "type": "copy"
     },
     {
-      "type": "EthTx",
-      "confirmations": null,
-      "params": {
-      }
+      "type": "EthBytes32",
+    },
+    {
+      "type": "EthTx"
     }
-  ],
-  "startAt": "2020-02-09T15:13:03Z",
-  "endAt": null
+  ]
 }`
