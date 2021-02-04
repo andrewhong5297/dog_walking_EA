@@ -76,10 +76,11 @@ const createRequest = (input, callback) => {
       const stringedResponse = arrayResponse.reduce((sum, d) => {
          return sum + d.toString().padStart(7, "0")
       }, "")
-      
+      //ethers.utils.formatBytes32String(stringedResponse)
+
       // console.log(arrayResponse)
       // console.log(stringedResponse)
-      callback(response.status, (jobRunID, ethers.utils.formatBytes32String(stringedResponse))) //8*four variables, so 28 characters. 
+      callback(response.status, (jobRunID, parseInt(stringedResponse))) //8*four variables, so 28 characters. 
     })
     .catch(error => {
       callback(500, Requester.errored(jobRunID, error))

@@ -19,7 +19,7 @@
       "type": "copy"
     },
     {
-      "type": "EthBytes32",
+      "type": "ethuint256",
     },
     {
       "type": "EthTx"
