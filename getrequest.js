@@ -16,13 +16,13 @@
       }
     },
     {
-      "type": "ethbytes32",
+      "type": "EthBytes32",
       "confirmations": null,
       "params": {
       }
     },
     {
-      "type": "ethtx",
+      "type": "EthTx",
       "confirmations": null,
       "params": {
       }
