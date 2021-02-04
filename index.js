@@ -1,5 +1,5 @@
-const { Requester, Validator } = require('@chainlink/external-adapter')
-
+const { Requester, Validator } = require('@chainlink/external-adapter');
+const { ethers } = require("ethers");
 
 // Define custom error scenarios for the API.
 // Return true for the adapter to retry.
@@ -77,14 +77,16 @@ const createRequest = (input, callback) => {
       const arrayResponse = [walkSum*100,distanceSum*100,dogCountSum*100,totalPaymentsDue*100]
 
       const stringedResponse = arrayResponse.reduce((sum, d) => {
-         return sum + d.toString().padStart(8, "0")
+         return sum + d.toString().padStart(7, "0")
       }, "")
-    
-      // console.log(arrayResponse)
+      
+      const bytesResponse = ethers.utils.formatBytes32String(stringedResponse);
+
+      console.log(arrayResponse)
+      console.log(bytesResponse)
       // console.log(stringedResponse.slice(0,8))
       // console.log(stringedResponse.slice(8,16))
-      // response.data.result = Requester.validateResultNumber(response.data, ['main','temp'])
-      callback(response.status, (jobRunID, stringedResponse)) //8*four variables, so 36 characters. 
+      callback(response.status, (jobRunID, bytesResponse)) //8*four variables, so 28 characters. 
     })
     .catch(error => {
       callback(500, Requester.errored(jobRunID, error))
