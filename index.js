@@ -74,7 +74,7 @@ const createRequest = (input, callback) => {
       const arrayResponse = [walkSum*100,distanceSum*100,dogCountSum*100,totalPaymentsDue*100]
 
       const stringedResponse = arrayResponse.reduce((sum, d) => {
-         return sum + d.toString().padStart(7, "0")
+         return sum + d.toString().padStart(5, "0")
       }, "")
       //ethers.utils.formatBytes32String(stringedResponse)
 
