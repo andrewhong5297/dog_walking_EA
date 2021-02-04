@@ -24,11 +24,11 @@ const createRequest = (input, callback) => {
   const endpoint = validator.validated.data.endpoint || 'graphql'
   const url = `https://realm.mongodb.com/api/client/v2.0/app/petproject-sfwui/${endpoint}`
   const subAddress = validator.validated.data.address
-  const hexaddress = '0x' + BigInt(subAddress).toString(16).padStart(40, '0') //to deal with weird parsing errors
-
+  const hexaddress = '0x' + BigInt(subAddress).toString(16).padStart(40, '0') //to deal with weird parsing errors from solidity string submission, which is an Int technically.
+  console.log(hexaddress)
   const query =JSON.stringify({query: `
   query {
-      walks (query: {Walker_Address: "${hexaddress}"}, sortBy: TIME_WALKED_ASC) {
+      walks (query: {Lower_Walker_Address: "${hexaddress}"}, sortBy: TIME_WALKED_ASC) {
           Distance_Walked
           Dog_Name
           Time_Walked
@@ -56,7 +56,6 @@ const createRequest = (input, callback) => {
       // It's common practice to store the desired value at the top-level
       // result key. This allows different adapters to be compatible with
       // one another.
-      console.log(response.data.data.walks)
       const pet_response = response.data
       const walkSum = pet_response.data.walks.reduce((sum,d) => {
         return sum + d.Time_Walked
@@ -70,12 +69,11 @@ const createRequest = (input, callback) => {
         return sum + 1
       }, 0)
       
-      const totalPaymentsDue = pet_response.data.walks.reduce((sum,d) => {
+      let totalPaymentsDue = pet_response.data.walks.reduce((sum,d) => {
         return sum + (d.Distance_Walked*d.Time_Walked)
       }, 0)
-    
-      // const name = pet_response.data.walks[0].Walker_Name //can't return name because complex array type. 
-      // Could make a seperate query for that, but for hackathon it is easier to just check API for matching address. it's like 3box
+      totalPaymentsDue = Math.round(totalPaymentsDue * 100) / 100
+      
       const finalResponse = [walkSum*100,distanceSum*100,dogCountSum*100,totalPaymentsDue*100]
 
       console.log(finalResponse)

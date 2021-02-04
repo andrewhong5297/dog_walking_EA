@@ -6,7 +6,7 @@ describe('createRequest', () => {
 
   context('successful calls', () => {
     const requests = [
-      { name: 'town', testData: { id: jobID, data: { address: '0xa55E01a40557fAB9d87F993d8f5344f1b2408072' } } }
+      { name: 'town', testData: { id: jobID, data: { address: '31803877693398533056304374249487059501607363464' } } }
     ]
 
     requests.forEach(req => {
