@@ -53,9 +53,6 @@ const createRequest = (input, callback) => {
   // or connection failure
   Requester.request(config, customError)
     .then(response => {
-      // It's common practice to store the desired value at the top-level
-      // result key. This allows different adapters to be compatible with
-      // one another.
       const pet_response = response.data
       const walkSum = pet_response.data.walks.reduce((sum,d) => {
         return sum + d.Time_Walked
@@ -82,8 +79,8 @@ const createRequest = (input, callback) => {
       
       const bytesResponse = ethers.utils.formatBytes32String(stringedResponse);
 
-      console.log(arrayResponse)
-      console.log(bytesResponse)
+      // console.log(arrayResponse)
+      // console.log(bytesResponse)
       // console.log(stringedResponse.slice(0,8))
       // console.log(stringedResponse.slice(8,16))
       callback(response.status, (jobRunID, bytesResponse)) //8*four variables, so 28 characters. 
