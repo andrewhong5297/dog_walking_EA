@@ -71,7 +71,7 @@ const createRequest = (input, callback) => {
       }, 0)
       totalPaymentsDue = Math.round(totalPaymentsDue * 100) / 100
       
-      const arrayResponse = [walkSum*100,distanceSum*100,dogCountSum*100,totalPaymentsDue*100]
+      const arrayResponse = [walkSum*100,distanceSum*100,dogCountSum*100,totalPaymentsDue*100] //this one need to be rounded first. 
 
       const stringedResponse = arrayResponse.reduce((sum, d) => {
          return sum + d.toString().padStart(5, "0")
@@ -80,7 +80,11 @@ const createRequest = (input, callback) => {
 
       // console.log(arrayResponse)
       // console.log(stringedResponse)
-      callback(response.status, (jobRunID, parseInt(stringedResponse))) //8*four variables, so 28 characters. 
+      callback(response.status, (jobRunID, {
+        jobRunID: input.id,
+        data: parseInt(stringedResponse), //5*four variables, so 20 characters. 
+        statusCode: 200
+        })) 
     })
     .catch(error => {
       callback(500, Requester.errored(jobRunID, error))
