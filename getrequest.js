@@ -3,7 +3,6 @@
     {
       "type": "runlog",
       "params": {
-        "address": "0xf5a4036ca35b9c017efa49932dca4bc8cc781aa4"
       }
     }
   ],
@@ -13,13 +12,28 @@
       "params": {
       }
     },
-    { "type": "copy",
-    "params": {"copyPath": ["result"]}},
     {
-      "type": "ethuint256",
+      "type": "copy",
+      "confirmations": null,
+      "params": {
+        "copyPath": [
+          "result"
+        ]
+      }
     },
     {
-      "type": "EthTx"
+      "type": "ethuint256",
+      "confirmations": null,
+      "params": {
+      }
+    },
+    {
+      "type": "ethtx",
+      "confirmations": null,
+      "params": {
+      }
     }
-  ]
+  ],
+  "startAt": null,
+  "endAt": null
 }
