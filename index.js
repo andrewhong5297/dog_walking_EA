@@ -82,7 +82,7 @@ const createRequest = (input, callback) => {
       // console.log(stringedResponse)
       callback(response.status, (jobRunID, {
         jobRunID: input.id,
-        data: { result: parseInt(stringedResponse)}, //5*four variables, so 20 characters. 
+        data: { result: stringedResponse}, //5*four variables, so 20 characters. 
         statusCode: 200
         })) 
     })

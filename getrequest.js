@@ -1,4 +1,4 @@
-`{
+{
   "initiators": [
     {
       "type": "runlog",
@@ -24,4 +24,4 @@
       "type": "EthTx"
     }
   ]
-}`
+}
