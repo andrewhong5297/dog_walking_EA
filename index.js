@@ -23,7 +23,7 @@ const createRequest = (input, callback) => {
   const jobRunID = validator.validated.id
   const endpoint = validator.validated.data.endpoint || 'graphql'
   const url = `https://realm.mongodb.com/api/client/v2.0/app/petproject-sfwui/${endpoint}`
-  const subAddress = validator.validated.data.address
+  const subAddress = validator.validated.data.address 
   const hexaddress = '0x' + BigInt(subAddress).toString(16).padStart(40, '0') //to deal with weird parsing errors from solidity string submission, which is an Int technically.
   console.log(hexaddress)
   const query =JSON.stringify({query: `

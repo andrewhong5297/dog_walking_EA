@@ -10,9 +10,7 @@
   "tasks": [
     {
       "type": "openweathermap_cl_ea",
-      "confirmations": 0,
       "params": {
-        "address": "31803877693398533056304374249487059501607363464"
       }
     },
     { "type": "copy",
