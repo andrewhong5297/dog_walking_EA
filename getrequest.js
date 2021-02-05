@@ -15,9 +15,8 @@
         "address": "31803877693398533056304374249487059501607363464"
       }
     },
-    {
-      "type": "copy"
-    },
+    { "type": "copy",
+    "params": {"copyPath": ["result"]}},
     {
       "type": "ethuint256",
     },
