@@ -54,15 +54,15 @@ const createRequest = (input, callback) => {
   Requester.request(config, customError)
     .then(response => {
       const pet_response = response.data
-      const walkSum = pet_response.data.walks.reduce((sum,d) => {
+      let walkSum = pet_response.data.walks.reduce((sum,d) => {
         return sum + d.Time_Walked
       }, 0)
     
-      const distanceSum = pet_response.data.walks.reduce((sum,d) => {
+      let distanceSum = pet_response.data.walks.reduce((sum,d) => {
         return sum + d.Distance_Walked
       }, 0)
     
-      const dogCountSum = pet_response.data.walks.reduce((sum) => {
+      let dogCountSum = pet_response.data.walks.reduce((sum) => {
         return sum + 1
       }, 0)
       
@@ -70,15 +70,18 @@ const createRequest = (input, callback) => {
         return sum + (d.Distance_Walked*d.Time_Walked)
       }, 0)
       totalPaymentsDue = Math.round(totalPaymentsDue * 100) / 100
+      walkSum = Math.round(walkSum * 100) / 100
+      distanceSum = Math.round(distanceSum * 100) / 100
+      dogCountSum = Math.round(dogCountSum * 100) / 100
       
       const arrayResponse = [walkSum*100,distanceSum*100,dogCountSum*100,totalPaymentsDue*100] //this one need to be rounded first. 
 
       const stringedResponse = arrayResponse.reduce((sum, d) => {
-         return sum + d.toString().padStart(5, "0")
+         return sum + d.toString().padStart(6, "0")
       }, "")
       //ethers.utils.formatBytes32String(stringedResponse)
 
-      // console.log(arrayResponse)
+      console.log(arrayResponse)
       // console.log(stringedResponse)
       callback(response.status, (jobRunID, {
         jobRunID: input.id,
